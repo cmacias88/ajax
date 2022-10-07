@@ -2,11 +2,12 @@
 
 // PART 1: SHOW A FORTUNE
 
-function showFortune(evt) {
+function showFortune() {
+
   fetch('/fortune')
     .then((response) => response.text())
     .then((Fortune) => {
-      document.querySelector("#fortune-text").innerText = Fortune;
+      document.querySelector("#fortune-text").innerHTML = Fortune;
     });
     
 }
@@ -25,8 +26,8 @@ function showWeather(evt) {
   fetch(url)
     .then((response) => response.json())
     .then((weather) => {
-      console.log(weather);
-      document.querySelector('#weather-info').innerHTML = weather.forecast;
+      // console.log(weather);
+      document.querySelector('#weather-info').innerText = weather.forecast;
     });
     
 }
@@ -39,13 +40,13 @@ function orderMelons(evt) {
   evt.preventDefault();
 
   function changeInput(input) {
-    if (input.code === 'OK') {
-      document.querySelector('#order-status').classList.remove('order-error');
-      document.querySelector('#order-status').innerHTML = `<p>${input.msg}</p>`;
-    } else {
+    if (input.code !== 'OK') {
       document.querySelector('#order-status').classList.add('order-error');
-      document.querySelector('#order-status').innerHTML = `<p><b>${input.msg}</b></p>`;
     }
+    else {
+      document.querySelector('#order-status').classList.remove('order-error');
+    }
+    document.querySelector('#order-status').innerHTML = `<p>${input.msg}</p>`;
   };
 
   const formInputs = {
@@ -66,3 +67,17 @@ function orderMelons(evt) {
 }
 
 document.querySelector('#order-form').addEventListener('submit', orderMelons);
+
+
+// FURTHER STUDY
+
+function updateImage() {
+
+  fetch('https://dog.ceo/api/breeds/image/random')
+    .then((response) => response.json())
+    .then((image) => {
+      document.querySelector('#dog-image').insertAdjacentHTML('beforeend', `<div><img src=${image.message}></div>`);
+    });
+}
+
+document.querySelector('#get-dog-image').addEventListener('click', updateImage);
